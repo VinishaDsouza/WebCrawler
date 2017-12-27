@@ -16,6 +16,7 @@
  */
 
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -25,6 +26,10 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+
+//import resources.CrawlerGraph;
+//import resources.Vertex;
+
 
 public class BasicCrawler extends WebCrawler {
 
@@ -61,14 +66,22 @@ public class BasicCrawler extends WebCrawler {
         String subDomain = page.getWebURL().getSubDomain();
         String parentUrl = page.getWebURL().getParentUrl();
         String anchor = page.getWebURL().getAnchor();
+        
+        try {
+			DatabaseManager.getInstance().open(docid, url);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 
         System.out.println("Docid: {}" + docid);
         System.out.println("URL: {}"+ url);
-//        logger.debug("Domain: '{}'", domain);
-//        logger.debug("Sub-domain: '{}'", subDomain);
-//        logger.debug("Path: '{}'", path);
-//        logger.debug("Parent page: {}", parentUrl);
-//        logger.debug("Anchor text: {}", anchor);
+        System.out.println("Domain: '{}'" + domain);
+        System.out.println("Sub-domain: '{}'" + subDomain);
+        System.out.println("Path: '{}'"+  path);
+        System.out.println("Parent page: {}" + parentUrl);
+        System.out.println("Anchor text: {}" + anchor);
 
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
@@ -76,19 +89,19 @@ public class BasicCrawler extends WebCrawler {
             String html = htmlParseData.getHtml();
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
-//            logger.debug("Text length: {}", text.length());
-//            logger.debug("Html length: {}", html.length());
-//            logger.debug("Number of outgoing links: {}", links.size());
+            System.out.println("Text length: {}" + text.length());
+            System.out.println("Html length: {}" + html.length());
+            System.out.println("Number of outgoing links: {}" + links.size());
         }
 
         Header[] responseHeaders = page.getFetchResponseHeaders();
         if (responseHeaders != null) {
-            //logger.debug("Response headers:");
+            System.out.println("Response headers:");
             for (Header header : responseHeaders) {
-                //logger.debug("\t{}: {}", header.getName(), header.getValue());
+                System.out.println("\t{}: {}" + header.getName() + header.getValue());
             }
         }
 
-        //logger.debug("=============");
+        System.out.println("=============");
     }
 }

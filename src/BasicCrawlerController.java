@@ -69,7 +69,7 @@ public class BasicCrawlerController {
      * You can set the maximum number of pages to crawl. The default value
      * is -1 for unlimited number of pages
      */
-        config.setMaxPagesToFetch(1000);
+        config.setMaxPagesToFetch(10);
 
         /**
          * Do you want crawler4j to crawl also binary data ?
